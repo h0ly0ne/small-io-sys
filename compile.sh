@@ -21,6 +21,7 @@ mtools=tools/mtools-4.0.18.upx
 apack1p=tools/apack1p-1.00.upx
 upx=tools/upx-3.94.upx
 unexepack=tools/pts-unexepack-v1.upx
+sevenzip=/usr/bin/7z
 
 # Downloads:
 #
@@ -58,7 +59,7 @@ else
       mv -f Boot-Diskette_X04-93011.IMA.tmp Boot-Diskette_X04-93011.IMA
     fi
     test "$(sha256sum Boot-Diskette_X04-93011.IMA)" = "9d88f1d27f6cf0f334b33586e00ded2d2f6d4dcd88f2c874940bbde2740919c1  Boot-Diskette_X04-93011.IMA"
-    7z e Boot-Diskette_X04-93011.IMA COMMAND.COM    
+    "$sevenzip" e Boot-Diskette_X04-93011.IMA COMMAND.COM    
     test "$(sha256sum COMMAND.COM)" = "47a37d865c601a9058a73f16816bb26b77b18881a2ee395290eca1d423e9dfae  COMMAND.COM"
   fi
 fi
