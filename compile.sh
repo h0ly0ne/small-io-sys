@@ -24,11 +24,12 @@ unexepack=tools/pts-unexepack-v1.upx
 
 # Downloads:
 #
-# * https://web.archive.org/web/20221002040438/https://www.allbootdisks.com/disk_files/Win98se/IO.SYS  (old, unpatched)
-# * https://web.archive.org/web/20250129012842/https://www.allbootdisks.com/disk_files/Win98se/COMMAND.COM
-# * https://web.archive.org/web/20020204073516/http://download.microsoft.com/download/win98/patch/22527/w98/en-us/311561usa8.exe  (contains the patched io.sys of KB311561)
-# * http://download.microsoft.com/download/win98/patch/22527/w98/de/311561ger8.exe
-if test -f winboot.98s && test -f command.com; then  # !! Add an option to omit command.com.
+# * https://web.archive.org/web/20221002040438/https://www.allbootdisks.com/disk_files/Win98se/IO.SYS  (old, unpatched io.sys)
+# * https://web.archive.org/web/20250129012842/https://www.allbootdisks.com/disk_files/Win98se/COMMAND.COM (english recent command.com)
+# * https://web.archive.org/web/20020204073516/http://download.microsoft.com/download/win98/patch/22527/w98/en-us/311561usa8.exe  (englisch recent io.sys)
+# * http://download.microsoft.com/download/win98/patch/22527/w98/de/311561ger8.exe (german recent io.sys)
+# * https://archive.org/download/windows-98se-deutsch-retail-start/Boot-Diskette_X04-93011.IMA (german recent command.com)
+if test -f winboot.98s && test -f COMMAND.COM; then  # !! Add an option to omit command.com.
   :
 else
   # Try to find the non-BusyBox wget(1) on PATH.
@@ -50,15 +51,20 @@ else
     "$cabextract" -q -F winboot.98s 311561ger8.exe
     test "$(sha256sum winboot.98s)" = "d34436a7ce911ed39549fce6107f3b55ad5d413565ebabc1398e13f2df103271  winboot.98s"
   fi
-  if ! test -f command.com; then
-    "$wget" $wget_flags command.com.tmp https://web.archive.org/web/20250129012842/https://www.allbootdisks.com/disk_files/Win98se/COMMAND.COM
-    test "$(sha256sum command.com.tmp)" = "c3b5899620d6c58b90727b640bb7bb6a723f6013629c9459c241e9dc9e7ff20b  command.com.tmp"
-    mv -f command.com.tmp command.com
+  if ! test -f COMMAND.COM; then
+    if ! test -f Boot-Diskette_X04-93011.IMA then
+      "$wget" $wget_flags Boot-Diskette_X04-93011.IMA.tmp https://archive.org/download/windows-98se-deutsch-retail-start/Boot-Diskette_X04-93011.IMA
+      test "$(sha256sum Boot-Diskette_X04-93011.IMA.tmp)" = "9d88f1d27f6cf0f334b33586e00ded2d2f6d4dcd88f2c874940bbde2740919c1  Boot-Diskette_X04-93011.IMA.tmp"
+      mv -f Boot-Diskette_X04-93011.IMA.tmp Boot-Diskette_X04-93011.IMA
+    fi
+    test "$(sha256sum Boot-Diskette_X04-93011.IMA)" = "9d88f1d27f6cf0f334b33586e00ded2d2f6d4dcd88f2c874940bbde2740919c1  Boot-Diskette_X04-93011.IMA"
+    7z e Boot-Diskette_X04-93011.IMA COMMAND.COM    
+    test "$(sha256sum COMMAND.COM)" = "47a37d865c601a9058a73f16816bb26b77b18881a2ee395290eca1d423e9dfae  COMMAND.COM"
   fi
 fi
 
 test "$(sha256sum winboot.98s)" = "d34436a7ce911ed39549fce6107f3b55ad5d413565ebabc1398e13f2df103271  winboot.98s"
-test "$(sha256sum command.com)" = "c3b5899620d6c58b90727b640bb7bb6a723f6013629c9459c241e9dc9e7ff20b  command.com"
+test "$(sha256sum COMMAND.COM)" = "47a37d865c601a9058a73f16816bb26b77b18881a2ee395290eca1d423e9dfae  COMMAND.COM"
 
 "$nasm" -O0 -w+orphan-labels -f bin -o fd.img -DP_1440K fat12b.nasm
 
@@ -111,7 +117,7 @@ cmp winboot.98s IO.SYS.win98sekb
 #"$mtools" -c mcopy -bsomp -i fd.img winboot.98s ::IO.SYS
 "$mtools" -c mcopy -bsomp -i fd.img IO.SYS.win98sekbpc ::IO.SYS
 "$mtools" -c mattrib -i fd.img +s ::IO.SYS
-"$mtools" -c mcopy -bsomp -i fd.img command.com ::COMMAND.COM
+"$mtools" -c mcopy -bsomp -i fd.img COMMAND.COM ::COMMAND.COM
 
 : qemu-system-i386 -M pc-1.0 -m 2 -nodefaults -vga cirrus -drive file=fd.img,format=raw,if=floppy -boot a
 
