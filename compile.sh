@@ -27,6 +27,7 @@ unexepack=tools/pts-unexepack-v1.upx
 # * https://web.archive.org/web/20221002040438/https://www.allbootdisks.com/disk_files/Win98se/IO.SYS  (old, unpatched)
 # * https://web.archive.org/web/20250129012842/https://www.allbootdisks.com/disk_files/Win98se/COMMAND.COM
 # * https://web.archive.org/web/20020204073516/http://download.microsoft.com/download/win98/patch/22527/w98/en-us/311561usa8.exe  (contains the patched io.sys of KB311561)
+# * http://download.microsoft.com/download/win98/patch/22527/w98/de/311561ger8.exe
 if test -f winboot.98s && test -f command.com; then  # !! Add an option to omit command.com.
   :
 else
@@ -38,15 +39,15 @@ else
     wget_flags=-sSLfo
   fi
   if ! test -f winboot.98s; then
-    if ! test -f 311561usa8.exe; then
-      "$wget" $wget_flags 311561usa8.exe.tmp https://web.archive.org/web/20020204073516/http://download.microsoft.com/download/win98/patch/22527/w98/en-us/311561usa8.exe
-      test "$(sha256sum 311561usa8.exe.tmp)" = "569ecb4fe36a7c00bf7f6d353467d8f95e4708fb8809d3e456760a8ef42be6fc  311561usa8.exe.tmp"
-      mv -f 311561usa8.exe.tmp 311561usa8.exe
+    if ! test -f 311561ger8.exe; then
+      "$wget" $wget_flags 311561ger8.exe.tmp https://download.microsoft.com/download/win98/patch/22527/w98/de/311561ger8.exe
+      test "$(sha256sum 311561ger8.exe.tmp)" = "87598e0712dae6196f45600a640bb651cdeadc2f58a62eb195862fcb4f026a76  311561ger8.exe.tmp"
+      mv -f 311561ger8.exe.tmp 311561ger8.exe
     fi
-    test "$(sha256sum 311561usa8.exe)" = "569ecb4fe36a7c00bf7f6d353467d8f95e4708fb8809d3e456760a8ef42be6fc  311561usa8.exe"
-    # echo "incbin '311561usa8.exe', 67224, 222099" >tc.nasm   # No need for this, cabextract works directly on 311561usa8.exe
-    # nasm-0.98.39 -O0 -w+orphan-labels -f bin -o tc.cab tc.nasm  # Input file: 311561usa8.exe
-    "$cabextract" -q -F winboot.98s 311561usa8.exe
+    test "$(sha256sum 311561ger8.exe)" = "87598e0712dae6196f45600a640bb651cdeadc2f58a62eb195862fcb4f026a76  311561ger8.exe"
+    # echo "incbin '311561ger8.exe', 67224, 222099" >tc.nasm   # No need for this, cabextract works directly on 311561ger8.exe
+    # nasm-0.98.39 -O0 -w+orphan-labels -f bin -o tc.cab tc.nasm  # Input file: 311561ger8.exe
+    "$cabextract" -q -F winboot.98s 311561ger8.exe
     test "$(sha256sum winboot.98s)" = "d34436a7ce911ed39549fce6107f3b55ad5d413565ebabc1398e13f2df103271  winboot.98s"
   fi
   if ! test -f command.com; then
