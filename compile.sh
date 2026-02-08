@@ -52,7 +52,7 @@ else
     test "$(sha256sum winboot.98s)" = "d34436a7ce911ed39549fce6107f3b55ad5d413565ebabc1398e13f2df103271  winboot.98s"
   fi
   if ! test -f COMMAND.COM; then
-    if ! test -f Boot-Diskette_X04-93011.IMA then
+    if ! test -f Boot-Diskette_X04-93011.IMA; then
       "$wget" $wget_flags Boot-Diskette_X04-93011.IMA.tmp https://archive.org/download/windows-98se-deutsch-retail-start/Boot-Diskette_X04-93011.IMA
       test "$(sha256sum Boot-Diskette_X04-93011.IMA.tmp)" = "9d88f1d27f6cf0f334b33586e00ded2d2f6d4dcd88f2c874940bbde2740919c1  Boot-Diskette_X04-93011.IMA.tmp"
       mv -f Boot-Diskette_X04-93011.IMA.tmp Boot-Diskette_X04-93011.IMA
