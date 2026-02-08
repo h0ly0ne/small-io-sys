@@ -174,3 +174,25 @@ the [tools/](tools/) directory):
 Copies of these build tool programs precompiled for Linux i386 (also runs on
 amd64) are provided in the small-io-sys Git repostory, there is no need to
 install anything manually.
+
+## Reference for generated files
+
+IO.SYS.win98sekb            - Unmodified input file
+IO.SYS.win98sekb.bmp			  - Boot Logo Component
+IO.SYS.win98sekb.msdcm			- MSDCM Component
+IO.SYS.win98sekb.msdcmc			- MSDCM Component aPACKed
+IO.SYS.win98sekb.msdcmx 		- MSDCM Component UPFXed 
+IO.SYS.win98sekb.msdcmfx		- MSDCM Component UFEpacked (not used)
+IO.SYS.win98sekb0				    - Patched input file (without Logo + MSDCM)
+IO.SYS.win98sekbp				    - Patched, optimized input file (without Logo + MSDCM)
+IO.SYS.win98sekbpc				  - Patched, optimized, compressed (aPACK) input file (without Logo + MSDCM)
+IO.SYS.win98sekbpl				  - Patched, optimized, compressed (LZMA) input file (without Logo + MSDCM)
+IO.SYS.win98sekbplx				  - Patched, optimized, compressed (LZMA >= 386) input file (without Logo + MSDCM)
+IO.SYS.win98sekbu				    - Patched input file (with Logo + without MSDCM)
+IO.SYS.win98sekbuu				  - Patched, optimized input file (with Logo + without MSDCM)
+IO.SYS.win98sekbuc				  - Patched, optimized, compressed (aPACK) input file (with Logo + without MSDCM)
+IO.SYS.win98sekbul				  - Patched, optimized, compressed (LZMA) input file (with Logo + without MSDCM)
+IO.SYS.win98sekbum				  - Patched input file (with Logo + MSDCM)
+IO.SYS.win98sekbumu				  - Patched, optimized input file (with Logo + MSDCM)
+IO.SYS.win98sekbumc				  - Patched, optimized, compressed (aPACK) input file (with Logo + MSDCM)
+IO.SYS.win98sekbuml				  - Patched, optimized, compressed (LZMA) input file (with Logo + MSDCM)
